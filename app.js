@@ -51,6 +51,24 @@ io.on('connection', function (socket) {
         orientation.y = messages[i + 2].trim();
         orientation.z = messages[i + 3].trim();
         sensorData.orientation = orientation;
+      } else if (messages[i] == 82) {
+        var linearAcceleration = {};
+        linearAcceleration.x = messages[i + 1].trim();
+        linearAcceleration.y = messages[i + 2].trim();
+        linearAcceleration.z = messages[i + 3].trim();
+        sensorData.linearAcceleration = linearAcceleration;
+      } else if (messages[i] == 83) {
+        var gravity = {};
+        gravity.x = messages[i + 1].trim();
+        gravity.y = messages[i + 2].trim();
+        gravity.z = messages[i + 3].trim();
+        sensorData.gravity = gravity;
+      } else if (messages[i] == 84) {
+        var rotation = {};
+        rotation.x = messages[i + 1].trim();
+        rotation.y = messages[i + 2].trim();
+        rotation.z = messages[i + 3].trim();
+        sensorData.rotation = rotation;
       } else {
         console.log(messages[i]);
       }
