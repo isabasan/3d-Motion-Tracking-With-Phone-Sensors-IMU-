@@ -17,10 +17,8 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.js"></script>
     <script>
-        var accelerometer = [];
-        var gyroscope = [];
-        var magnetometer = [];
-        var orientation = [];
+        var gyroscope;
+        var linearAcceleration;
 
         var targetRotation = 0;
         var renderer, scene, camera;
@@ -30,35 +28,60 @@
             animate();
 
             var socket = io();
+            var time = Date.now();
             socket.on('message', function (data) {
-                if (data.accelerometer) {
-                    accelerometer.push(data.accelerometer);
-                    $('#messages').prepend($('<li>').text("accelerometer:" + JSON.stringify(data.accelerometer)));
+                var interval = (Date.now() - time) / 1000;
+                time = Date.now();
+                if (data.linearAcceleration) {
+                    linearAcceleration = data.linearAcceleration;
+                    $('#messages').prepend($('<li>').text("linearAcceleration:" + JSON.stringify(data.linearAcceleration)));
+                    //cube.position.x += (filter(data.linearAcceleration.x) * 10);
+                    cube.position.x += 1 / 2 * filter(data.linearAcceleration.x) / interval / interval;
                 }
                 if (data.gyroscope) {
-                    gyroscope.push(data.gyroscope);
-                    $('#messages').prepend($('<li>').text("gyroscope:" + JSON.stringify(data.gyroscope)));
+                    //$('#messages').prepend($('<li>').text("gyroscope:" + JSON.stringify(data.gyroscope)));
+                    gyroscope = data.gyroscope;
+                    cube.rotateX(data.gyroscope.x * interval);
+                    cube.rotateY(data.gyroscope.z * interval);
+                    cube.rotateZ(-1 * data.gyroscope.y * interval);
 
-                    // cube.rotateX(data.gyroscope.x * Math.PI / 90);
-                    // cube.rotateZ(-1 * data.gyroscope.y * Math.PI / 90);
-                    // cube.rotateY(data.gyroscope.z * Math.PI / 90);
+                    // gyro.x.min = Math.min(gyro.x.min, data.gyroscope.x);
+                    // gyro.x.max = Math.max(gyro.x.max, data.gyroscope.x);
+
+                    // gyro.y.min = Math.min(gyro.y.min, data.gyroscope.x);
+                    // gyro.y.max = Math.max(gyro.y.max, data.gyroscope.x);
+
+                    // gyro.z.min = Math.min(gyro.z.min, data.gyroscope.z);
+                    // gyro.z.max = Math.max(gyro.z.max, data.gyroscope.z);
+
+                    // console.log('data.gyroscope', data.gyroscope);
+                    // console.log('x.min', gyro.x.min);
+                    // console.log('x.max', gyro.x.max);
+
+                    // console.log('y.min', gyro.y.min);
+                    // console.log('y.max', gyro.y.max);
+
+                    // console.log('z.min', gyro.z.min);
+                    // console.log('z.max', gyro.z.max);
                 }
                 if (data.magnetometer) {
-                    magnetometer.push(data.magnetometer);
-                    $('#messages').prepend($('<li>').text("magnetometer:" + JSON.stringify(data.magnetometer)));
+                    //$('#messages').prepend($('<li>').text("magnetometer:" + JSON.stringify(data.magnetometer)));
                 }
                 if (data.orientation) {
-                    orientation.push(data.orientation);
-                    $('#messages').prepend($('<li>').text("orientation:" + JSON.stringify(data.orientation)));
-                    // cube.rotation.y = -1 * data.orientation.x * Math.PI / 180;
-                    // cube.rotation.x = -1 * data.orientation.y * Math.PI / 180;
-                    // cube.rotation.z = -1 * data.orientation.z * Math.PI / 180;
+                    //$('#messages').prepend($('<li>').text("orientation:" + JSON.stringify(data.orientation)));
                 }
                 if (data.rotation) {
-                    
+
                 }
             });
         });
+
+        function filter(x) {
+            if (x <= -0.02 || x >= 0.02)
+                return x;
+            else
+                return 0;
+        }
 
         function init() {
             scene = new THREE.Scene();

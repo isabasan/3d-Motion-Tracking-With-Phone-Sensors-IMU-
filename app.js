@@ -35,39 +35,39 @@ io.on('connection', function (socket) {
         sensorData.accelerometer = acc;
       } else if (messages[i] == 4) {
         var gyro = {};
-        gyro.x = messages[i + 1].trim();
-        gyro.y = messages[i + 2].trim();
-        gyro.z = messages[i + 3].trim();
+        gyro.x = parseFloat(messages[i + 1].trim());
+        gyro.y = parseFloat(messages[i + 2].trim());
+        gyro.z = parseFloat(messages[i + 3].trim());
         sensorData.gyroscope = gyro;
       } else if (messages[i] == 5) {
         var magne = {};
-        magne.x = messages[i + 1].trim();
-        magne.y = messages[i + 2].trim();
-        magne.z = messages[i + 3].trim();
+        magne.x = parseFloat(messages[i + 1].trim());
+        magne.y = parseFloat(messages[i + 2].trim());
+        magne.z = parseFloat(messages[i + 3].trim());
         sensorData.magnetometer = magne;
       } else if (messages[i] == 81) {
         var orientation = {};
-        orientation.x = messages[i + 1].trim();
-        orientation.y = messages[i + 2].trim();
-        orientation.z = messages[i + 3].trim();
+        orientation.x = parseFloat(messages[i + 1].trim());
+        orientation.y = parseFloat(messages[i + 2].trim());
+        orientation.z = parseFloat(messages[i + 3].trim());
         sensorData.orientation = orientation;
       } else if (messages[i] == 82) {
         var linearAcceleration = {};
-        linearAcceleration.x = messages[i + 1].trim();
-        linearAcceleration.y = messages[i + 2].trim();
-        linearAcceleration.z = messages[i + 3].trim();
+        linearAcceleration.x = parseFloat(messages[i + 1].trim());
+        linearAcceleration.y = parseFloat(messages[i + 2].trim());
+        linearAcceleration.z = parseFloat(messages[i + 3].trim());
         sensorData.linearAcceleration = linearAcceleration;
       } else if (messages[i] == 83) {
         var gravity = {};
-        gravity.x = messages[i + 1].trim();
-        gravity.y = messages[i + 2].trim();
-        gravity.z = messages[i + 3].trim();
+        gravity.x = parseFloat(messages[i + 1].trim());
+        gravity.y = parseFloat(messages[i + 2].trim());
+        gravity.z = parseFloat(messages[i + 3].trim());
         sensorData.gravity = gravity;
       } else if (messages[i] == 84) {
         var rotation = {};
-        rotation.x = messages[i + 1].trim();
-        rotation.y = messages[i + 2].trim();
-        rotation.z = messages[i + 3].trim();
+        rotation.x = parseFloat(messages[i + 1].trim());
+        rotation.y = parseFloat(messages[i + 2].trim());
+        rotation.z = parseFloat(messages[i + 3].trim());
         sensorData.rotation = rotation;
       } else {
         console.log(messages[i]);
